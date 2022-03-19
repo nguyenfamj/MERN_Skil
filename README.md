@@ -1,1 +1,1 @@
-# MERN_Sticki server-side application
+# MERN_Sticki
