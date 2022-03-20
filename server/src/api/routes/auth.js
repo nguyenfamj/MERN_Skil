@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const { userRegister, userLogin } = require('../controllers/auth');
 
-// Import User model
-const User = require('../models/User');
+// @route POST api/auth/register
+// @desc User Register
+// @access Public
+router.post('/register', userRegister);
 
-router.get('/new', (req, res) => res.send('User Auth route'));
+// @route POST api/auth/login
+// @desc User Login
+// @access Public
+router.post('/login', userLogin);
 
 module.exports = router;

@@ -11,11 +11,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
   createdAt: {
     type: Date,
-    default: () => Date.now,
+    default: () => Date.now(),
   },
 });
 

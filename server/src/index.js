@@ -15,13 +15,16 @@ const authRouter = require('./api/routes/auth');
 // ---------------------------------------------------------------
 
 connectDB(mongoURI)
-  .then(() =>
+  .then(() => {
     // Setup express server and config port
-    app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
-  )
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+    // Setup middlewares
+    app.use(express.json());
+
+    //   Setup main routing
+    app.use('/api/auth', authRouter);
+  })
   .catch((error) => {
     console.log(`Connection error. Please check the following error message: ${error.message}`);
   });
-
-//   Setup main routing
-app.use('/api/auth', authRouter);
