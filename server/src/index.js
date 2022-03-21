@@ -25,7 +25,7 @@ connectDB(mongoURI)
 
     //   Setup main application routing
     app.use('/api/auth', authRouter);
-    app.use('/api/posts', skillRouter);
+    app.use('/api/skills', skillRouter);
   })
   .catch((error) => {
     console.log(`Connection error. Please check the following error message: ${error.message}`);
