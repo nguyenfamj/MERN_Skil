@@ -71,4 +71,24 @@ const updateSkill = async (req, res) => {
   }
 };
 
-module.exports = { createSkill, getSkills, updateSkill };
+// Delete a skill
+const deleteSkill = async (req, res) => {
+  try {
+    const deleteCondition = { _id: req.params.id, user: req.userID };
+
+    const deletedSkill = await Skill.findOneAndDelete(deleteCondition);
+
+    // User not authorized to delete skill or skill not found in database
+    if (!deleteSkill)
+      return res
+        .status(401)
+        .json({ success: false, message: 'Skill not found or user is not authorized to delete' });
+
+    res.json({ success: true, message: 'Skill deleted', skill: deletedSkill });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+module.exports = { createSkill, getSkills, updateSkill, deleteSkill };
