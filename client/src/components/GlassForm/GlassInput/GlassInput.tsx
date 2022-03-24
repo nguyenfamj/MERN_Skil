@@ -1,14 +1,15 @@
 import React from 'react';
 
-interface propTypes {
-  placeholder: string;
-}
+// Import interface
+import { inputMetas, glassInputProps } from '../../../interfaces/formInputs';
 
-const GlassInput = ({ placeholder }: propTypes) => {
+const GlassInput = ({ metas, values, onChange }: glassInputProps) => {
+  const { id, errorMessage, label, required, ...inputProps }: inputMetas = metas;
+
   return (
-    <div className=''>
-      <label>Username</label>
-      <input placeholder={placeholder} className='border border-black ' />
+    <div className='flex flex-col'>
+      <label>{label}</label>
+      <input {...inputProps} className='border border-black rounded-lg' />
     </div>
   );
 };
