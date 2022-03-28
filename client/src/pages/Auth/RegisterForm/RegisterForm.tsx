@@ -5,6 +5,7 @@ import { inputMetas, onChangeType, registerInput } from '../../../interfaces/for
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
+import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -37,17 +38,6 @@ const Register = () => {
     },
     {
       id: 3,
-      name: 'password',
-      type: 'password',
-      placeholder: 'Password',
-      errorMessage:
-        'Password should be more than 8 characters and includes at least 1 letter, 1 number and 1 special character!',
-      label: 'Password',
-      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$`,
-      required: true,
-    },
-    {
-      id: 4,
       name: 'firstname',
       type: 'text',
       placeholder: 'Firstname',
@@ -57,7 +47,7 @@ const Register = () => {
       required: true,
     },
     {
-      id: 5,
+      id: 4,
       name: 'lastname',
       type: 'text',
       placeholder: 'Lastname',
@@ -74,10 +64,10 @@ const Register = () => {
     });
   };
   return (
-    <div>
+    <GlassWrapper>
       <h1>Register</h1>
       <GlassForm inputs={inputs} values={values} onChange={onChange} />
-    </div>
+    </GlassWrapper>
   );
 };
 

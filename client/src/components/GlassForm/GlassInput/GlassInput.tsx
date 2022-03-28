@@ -7,9 +7,11 @@ const GlassInput = ({ metas, values, onChange }: glassInputProps) => {
   const { id, errorMessage, label, required, ...inputProps }: inputMetas = metas;
 
   return (
-    <div className='flex flex-col'>
-      <label>{label}</label>
-      <input {...inputProps} className='border border-black rounded-lg' />
+    <div className='flex-col'>
+      <input
+        {...inputProps}
+        className='p-3 mb-4 border border-black border-none rounded-xl bg-white/40 placeholder:text-black/70'
+      />
     </div>
   );
 };
