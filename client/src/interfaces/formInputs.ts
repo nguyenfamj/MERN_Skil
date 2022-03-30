@@ -24,13 +24,13 @@ export interface registerInput {
 }
 
 export interface glassFormProps {
+  title?: string;
   inputs: inputMetas[];
-  values: loginInput | registerInput;
   onChange: onChangeType;
 }
 
 export interface glassInputProps {
   metas: inputMetas;
-  values: loginInput | registerInput;
+
   onChange: onChangeType;
 }

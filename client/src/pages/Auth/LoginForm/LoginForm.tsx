@@ -5,7 +5,11 @@ import { inputMetas, onChangeType } from '../../../interfaces/formInputs';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
+import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
+
+// Import from react-router
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const [values, setValues] = useState({
@@ -20,7 +24,8 @@ const LoginForm = () => {
       name: 'username',
       type: 'text',
       placeholder: 'Username',
-      errorMessage: "Username shouldn't include any special character!",
+      errorMessage:
+        "Username must be more than one character shouldn't include any special character!",
       label: 'Username',
       pattern: '^[A-Za-z0-9]{2,}$',
       required: true,
@@ -47,8 +52,18 @@ const LoginForm = () => {
 
   return (
     <GlassWrapper>
-      <h1>Login</h1>
-      <GlassForm inputs={inputs} values={values} onChange={onChange} />
+      <h1 className='text-4xl font-black translate-y-14 text-sky-500'>STICKI</h1>
+      <div>
+        <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
+        <GlassForm inputs={inputs} onChange={onChange} />
+        <GlassButton title='Login'></GlassButton>
+      </div>
+      <p className='pb-6 text-sm text-indigo-900'>
+        Don't have an account?
+        <Link to='/register' className='underline'>
+          Register
+        </Link>
+      </p>
     </GlassWrapper>
   );
 };

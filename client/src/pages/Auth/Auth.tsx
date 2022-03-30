@@ -5,7 +5,7 @@ import LoginForm from './LoginForm/LoginForm';
 import RegisterForm from './RegisterForm/RegisterForm';
 
 // Import assets
-import background from '../../assets/pictures/mesh-gradient.jpeg';
+import background from '../../assets/pictures/mesh-gradient.jpg';
 
 // Interface
 interface propTypes {
