@@ -11,12 +11,12 @@ export interface inputMetas {
   required: boolean;
 }
 
-export interface loginInput {
+export interface loginAuth {
   username: string;
   password: string;
 }
 
-export interface registerInput {
+export interface registerAuth {
   username: string;
   password: string;
   firstname: string;
@@ -31,6 +31,5 @@ export interface glassFormProps {
 
 export interface glassInputProps {
   metas: inputMetas;
-
   onChange: onChangeType;
 }

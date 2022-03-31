@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Import Login Interface
-import { inputMetas, onChangeType } from '../../../interfaces/formInputs';
+import { inputMetas, onChangeType, loginAuth } from '../../../interfaces/formInputs';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
@@ -12,7 +12,7 @@ import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styl
 import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<loginAuth>({
     username: '',
     password: '',
   });
