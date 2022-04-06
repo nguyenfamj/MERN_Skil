@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // Import environment variable
@@ -21,6 +22,7 @@ connectDB(mongoURI)
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
     // Setup middlewares
+    app.use(cors());
     app.use(express.json());
 
     //   Setup main application routing

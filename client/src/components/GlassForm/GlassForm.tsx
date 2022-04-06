@@ -6,12 +6,12 @@ import GlassInput from './GlassInput/GlassInput';
 // Import interface
 import { glassFormProps } from '../../interfaces/formInputs';
 
-const GlassForm = ({ inputs, onChange }: glassFormProps) => {
+const GlassForm = ({ inputs, onChange, values }: glassFormProps) => {
   return (
     <form className=''>
-      {inputs.map((input) => (
-        <GlassInput metas={input} key={input.id} onChange={onChange} />
-      ))}
+      {inputs.map((input) => {
+        return <GlassInput metas={input} key={input.id} onChange={onChange} values={values} />;
+      })}
     </form>
   );
 };

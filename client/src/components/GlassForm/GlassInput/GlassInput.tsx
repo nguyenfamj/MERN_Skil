@@ -1,9 +1,9 @@
 import React from 'react';
 
 // Import interface
-import { inputMetas, glassInputProps } from '../../../interfaces/formInputs';
+import { inputMetas, glassInputProps, inputsValueType } from '../../../interfaces/formInputs';
 
-const GlassInput = ({ metas, onChange }: glassInputProps) => {
+const GlassInput = ({ metas, onChange, values }: glassInputProps) => {
   const { id, errorMessage, label, required, ...inputProps }: inputMetas = metas;
 
   return (
@@ -11,6 +11,7 @@ const GlassInput = ({ metas, onChange }: glassInputProps) => {
       <input
         title='input'
         {...inputProps}
+        value={values[inputProps.name]}
         onChange={onChange}
         className='p-3 pl-5 text-sm border shadow-sm border-slate-200 peer w-72 rounded-xl bg-white/40 placeholder:text-black/50 placeholder:text-sm focus:outline-none focus:border-indigo-900 focus:ring-1 focus:ring-indigo-500 invalid:border-red-500 focus:invalid:border-red-500 focus:invalid:ring-red-400 invalid:text-red-400'
       />

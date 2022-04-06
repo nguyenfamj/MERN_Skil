@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 // Import Login Interface
 import { inputMetas, onChangeType, loginAuth } from '../../../interfaces/formInputs';
+import { loginAuthResponse } from '../../../interfaces/apiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
@@ -11,12 +12,12 @@ import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styl
 // Import from react-router
 import { Link } from 'react-router-dom';
 
-const LoginForm = () => {
-  const [values, setValues] = useState<loginAuth>({
-    username: '',
-    password: '',
-  });
+// Import from Redux toolkit
+import { useLoginMutation } from '../../../redux/services/authApi';
+import { useAppDispatch } from '../../../hooks/rtkHook';
+import { setCredentials } from '../../../redux/slices/authSlice';
 
+const LoginForm = () => {
   // Inputs data
   const inputs: inputMetas[] = [
     {
@@ -43,11 +44,42 @@ const LoginForm = () => {
     },
   ];
 
-  const onChange: onChangeType = (e: any) => {
-    setValues({
-      ...values,
+  // Login States
+  const [loginStates, setLoginStates] = useState<loginAuth>({
+    username: '',
+    password: '',
+  });
+
+  // onChange function to mutate states
+  const onChange: onChangeType = (e) => {
+    setLoginStates({
+      ...loginStates,
       [e.target.name]: e.target.value,
     });
+  };
+
+  // Handle login function
+  // // useMutation hooks
+  const dispatch = useAppDispatch();
+  const [login, { isLoading, isSuccess }] = useLoginMutation();
+
+  // // onClick button handler
+  const loginHandler = async () => {
+    const usernameRegex = /^[A-Za-z0-9]{2,}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
+    if (usernameRegex.test(loginStates.username) && passwordRegex.test(loginStates.password)) {
+      try {
+        const response = await login({
+          username: loginStates.username,
+          password: loginStates.password,
+        }).unwrap();
+        console.log(response);
+        dispatch(setCredentials({ accessToken: response.accessToken }));
+      } catch (error) {
+        console.log(error, error.data.message);
+      }
+    }
   };
 
   return (
@@ -55,8 +87,8 @@ const LoginForm = () => {
       <h1 className='text-4xl font-black translate-y-14 text-sky-500'>STICKI</h1>
       <div>
         <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
-        <GlassForm inputs={inputs} onChange={onChange} />
-        <GlassButton title='Login'></GlassButton>
+        <GlassForm inputs={inputs} onChange={onChange} values={loginStates} />
+        <GlassButton title='Login' onClick={loginHandler} isLoading={isLoading}></GlassButton>
       </div>
       <p className='pb-6 text-sm text-indigo-900'>
         Don't have an account?

@@ -1,4 +1,8 @@
-export type onChangeType = (event: any) => void;
+import React from 'react';
+
+export type onChangeType = (event: React.ChangeEvent<HTMLInputElement>) => void;
+
+export type inputsValueType = loginAuth | registerAuth;
 
 export interface inputMetas {
   id: number;
@@ -26,10 +30,12 @@ export interface registerAuth {
 export interface glassFormProps {
   title?: string;
   inputs: inputMetas[];
+  values: inputsValueType;
   onChange: onChangeType;
 }
 
 export interface glassInputProps {
   metas: inputMetas;
+  values: any;
   onChange: onChangeType;
 }

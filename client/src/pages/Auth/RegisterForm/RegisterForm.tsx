@@ -12,15 +12,6 @@ import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styl
 import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [values, setValues] = useState<registerAuth>({
-    username: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-  });
-
-  console.log(values);
-
   // Input data
   const inputs: inputMetas[] = [
     {
@@ -66,18 +57,27 @@ const Register = () => {
       required: true,
     },
   ];
-  const onChange: onChangeType = (e: any) => {
-    setValues({
-      ...values,
+
+  const [registerStates, setRegisterStates] = useState<registerAuth>({
+    username: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+  });
+
+  const onChange: onChangeType = (e) => {
+    setRegisterStates({
+      ...registerStates,
       [e.target.name]: e.target.value,
     });
   };
+
   return (
     <GlassWrapper>
       <h1 className='text-4xl font-black text-sky-500 translate-y-14'>STICKI</h1>
       <div>
         <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
-        <GlassForm inputs={inputs} onChange={onChange} />
+        <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />
         <GlassButton title='Register'></GlassButton>
       </div>
       <p className='pb-6 text-sm text-indigo-900'>

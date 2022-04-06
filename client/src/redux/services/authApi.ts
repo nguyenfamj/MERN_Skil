@@ -16,7 +16,7 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
+      const token = (getState() as RootState).auth.accessToken;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -24,8 +24,10 @@ export const authApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getLoginAuth: builder.mutation<loginAuthResponse, loginAuth>({
+    login: builder.mutation<loginAuthResponse, loginAuth>({
       query: (loginInput) => ({ url: 'auth/login', method: 'POST', body: loginInput }),
     }),
   }),
 });
+
+export const { useLoginMutation } = authApi;
