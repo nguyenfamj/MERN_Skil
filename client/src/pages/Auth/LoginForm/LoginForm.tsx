@@ -10,12 +10,13 @@ import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
 
 // Import from react-router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Import from Redux toolkit
 import { useLoginMutation } from '../../../redux/services/authApi';
 import { useAppDispatch } from '../../../hooks/rtkHook';
 import { setCredentials } from '../../../redux/slices/authSlice';
+import { RegularExpressionLiteral } from 'typescript';
 
 const LoginForm = () => {
   // Inputs data
@@ -44,6 +45,9 @@ const LoginForm = () => {
     },
   ];
 
+  // Router
+  const navigate = useNavigate();
+
   // Login States
   const [loginStates, setLoginStates] = useState<loginAuth>({
     username: '',
@@ -65,17 +69,18 @@ const LoginForm = () => {
 
   // // onClick button handler
   const loginHandler = async () => {
-    const usernameRegex = /^[A-Za-z0-9]{2,}$/;
-    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    const usernameRegex: RegExp = /^[A-Za-z0-9]{2,}$/;
+    const passwordRegex: RegExp =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
     if (usernameRegex.test(loginStates.username) && passwordRegex.test(loginStates.password)) {
       try {
-        const response = await login({
-          username: loginStates.username,
-          password: loginStates.password,
-        }).unwrap();
+        const response: loginAuthResponse = await login(loginStates).unwrap();
         console.log(response);
         dispatch(setCredentials({ accessToken: response.accessToken }));
+        if (response.success) {
+          navigate('/dashboard');
+        }
       } catch (error) {
         console.log(error, error.data.message);
       }

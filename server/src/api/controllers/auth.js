@@ -4,6 +4,18 @@ const jwt = require('jsonwebtoken');
 // Import User model
 const User = require('../models/User');
 
+// User Authentication handling, check for login status
+const userAuth = async (req, res) => {
+  try {
+    const user = await User.findById(req.userID).select('-password');
+    if (!user) return res.status(400).json({ success: false, message: 'User not found' });
+    res.json({ success: true, message: 'Successfully authenticated', user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 // User Register handling
 const userRegister = async (req, res) => {
   const { username, password, firstname, lastname } = req.body;
@@ -65,4 +77,4 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { userRegister, userLogin };
+module.exports = { userAuth, userRegister, userLogin };
