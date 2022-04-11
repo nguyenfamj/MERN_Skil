@@ -8,9 +8,10 @@ import RegisterForm from './RegisterForm/RegisterForm';
 import background from '../../assets/pictures/mesh-gradient.jpg';
 
 // Import from RTK
-import { useAuthenticateQuery } from '../../redux/services/authApi';
-import { useAppDispatch } from '../../hooks/rtkHook';
-import { setUser } from '../../redux/slices/authSlice';
+import { useAppSelector } from '../../hooks/rtkHook';
+
+// Import from React-Router-DOM
+import { useNavigate } from 'react-router-dom';
 
 // Interface
 interface propTypes {
@@ -18,22 +19,18 @@ interface propTypes {
 }
 
 const Auth = ({ authRoute }: propTypes) => {
-  const { data, error, isLoading } = useAuthenticateQuery();
-  const dispatch = useAppDispatch();
-  const authenticateUser = async () => {
-    if (isLoading) {
-      console.log('Loading...');
-    }
-    if (data?.success) {
-      console.log('Authenticated');
-      dispatch(setUser({ user: data?.user }));
-    } else if (error) {
-      console.log(error);
-    }
-  };
+  // Router
+  const navigate = useNavigate();
+
+  // Take state from the store and query authenticateUser
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  // Navigate automatically to dashboard when authenticated
   useEffect(() => {
-    authenticateUser();
-  }, [data?.success]);
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated]);
 
   return (
     <div

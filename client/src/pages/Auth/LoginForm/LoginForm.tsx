@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 // Import Login Interface
 import { inputMetas, onChangeType, loginAuth } from '../../../interfaces/formInputs';
-import { loginAuthResponse } from '../../../interfaces/apiResponse';
+import { loginAuthResponse, errorAlert } from '../../../interfaces/apiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
 import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
+import GlassDialog from '../../../components/GlassDialog/GlassDialog';
 
 // Import from react-router
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,7 +17,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../../redux/services/authApi';
 import { useAppDispatch } from '../../../hooks/rtkHook';
 import { setCredentials } from '../../../redux/slices/authSlice';
-import { RegularExpressionLiteral } from 'typescript';
 
 const LoginForm = () => {
   // Inputs data
@@ -54,6 +54,9 @@ const LoginForm = () => {
     password: '',
   });
 
+  // Error State
+  const [alert, setAlert] = useState<errorAlert | null>(null);
+
   // onChange function to mutate states
   const onChange: onChangeType = (e) => {
     setLoginStates({
@@ -69,6 +72,7 @@ const LoginForm = () => {
 
   // // onClick button handler
   const loginHandler = async () => {
+    setAlert(null);
     const usernameRegex: RegExp = /^[A-Za-z0-9]{2,}$/;
     const passwordRegex: RegExp =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -82,26 +86,30 @@ const LoginForm = () => {
           navigate('/dashboard');
         }
       } catch (error) {
-        console.log(error, error.data.message);
+        setAlert({ title: 'Login Failed', message: error.data.message });
       }
     }
   };
 
   return (
-    <GlassWrapper>
-      <h1 className='text-4xl font-black translate-y-14 text-sky-500'>STICKI</h1>
-      <div>
-        <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
-        <GlassForm inputs={inputs} onChange={onChange} values={loginStates} />
-        <GlassButton title='Login' onClick={loginHandler} isLoading={isLoading}></GlassButton>
-      </div>
-      <p className='pb-6 text-sm text-indigo-900'>
-        Don't have an account?
-        <Link to='/register' className='underline'>
-          Register
-        </Link>
-      </p>
-    </GlassWrapper>
+    <>
+      {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
+      <GlassWrapper>
+        <h1 className='text-4xl font-black translate-y-14 text-sky-500'>STICKI</h1>
+
+        <div>
+          <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
+          <GlassForm inputs={inputs} onChange={onChange} values={loginStates} />
+          <GlassButton title='Login' onClick={loginHandler} isLoading={isLoading}></GlassButton>
+        </div>
+        <p className='pb-6 text-sm text-indigo-900'>
+          Don't have an account?
+          <Link to='/register' className='underline'>
+            Register
+          </Link>
+        </p>
+      </GlassWrapper>
+    </>
   );
 };
 

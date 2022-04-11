@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 // Import Register Interface
 import { inputMetas, onChangeType, registerAuth } from '../../../interfaces/formInputs';
-import { registerAuthResponse } from '../../../interfaces/apiResponse';
+import { registerAuthResponse, errorAlert } from '../../../interfaces/apiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
 import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
+import GlassDialog from '../../../components/GlassDialog/GlassDialog';
 
 // Import from react-router
 import { Link, useNavigate } from 'react-router-dom';
@@ -75,6 +76,9 @@ const Register = () => {
     lastname: '',
   });
 
+  // Error State
+  const [alert, setAlert] = useState<errorAlert | null>(null);
+
   // onChange function to mutate states
   const onChange: onChangeType = (e) => {
     setRegisterStates({
@@ -90,6 +94,7 @@ const Register = () => {
 
   // onClick button handler
   const registerHandler = async () => {
+    setAlert(null);
     const usernameRegex: RegExp = /^[A-Za-z0-9]{2,}$/;
     const passwordRegex: RegExp =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -110,26 +115,33 @@ const Register = () => {
           navigate('/login');
         }
       } catch (error) {
-        console.log(error, error.data.message);
+        setAlert({ title: 'Register Failed', message: error.data.message });
       }
     }
   };
 
   return (
-    <GlassWrapper>
-      <h1 className='text-4xl font-black text-sky-500 translate-y-14'>STICKI</h1>
-      <div>
-        <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
-        <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />
-        <GlassButton title='Register' onClick={registerHandler} isLoading={isLoading}></GlassButton>
-      </div>
-      <p className='pb-6 text-sm text-indigo-900'>
-        Already have an account?{' '}
-        <Link to='/login' className='underline'>
-          Login
-        </Link>
-      </p>
-    </GlassWrapper>
+    <>
+      {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
+      <GlassWrapper>
+        <h1 className='text-4xl font-black text-sky-500 translate-y-14'>STICKI</h1>
+        <div>
+          <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
+          <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />
+          <GlassButton
+            title='Register'
+            onClick={registerHandler}
+            isLoading={isLoading}
+          ></GlassButton>
+        </div>
+        <p className='pb-6 text-sm text-indigo-900'>
+          Already have an account?{' '}
+          <Link to='/login' className='underline'>
+            Login
+          </Link>
+        </p>
+      </GlassWrapper>
+    </>
   );
 };
 

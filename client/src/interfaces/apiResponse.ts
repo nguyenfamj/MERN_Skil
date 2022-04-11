@@ -22,3 +22,8 @@ export interface userResponseModel {
   lastname: string;
   createdAt: Date;
 }
+
+export interface errorAlert {
+  title: string;
+  message: string;
+}

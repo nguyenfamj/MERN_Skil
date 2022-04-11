@@ -19,6 +19,7 @@ export const authSlice = createSlice({
       { payload: { accessToken } }: PayloadAction<{ accessToken: string }>
     ) => {
       state.accessToken = accessToken;
+      state.isAuthenticated = true;
       localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, accessToken);
     },
     setUser: (state, { payload: { user } }: PayloadAction<{ user: userResponseModel }>) => {
