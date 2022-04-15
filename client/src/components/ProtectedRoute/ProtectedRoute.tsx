@@ -11,6 +11,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ path, element: Element }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
   if (isAuthenticated) {
     return (
       <div className='w-screen h-screen bg-radial-gradient-background'>

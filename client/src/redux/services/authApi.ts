@@ -13,15 +13,14 @@ import { loginAuth, registerAuth } from '../../interfaces/formInputs';
 import { RootState } from '../store';
 
 // Import API URL
-import { apiURL as baseUrl, LOCAL_STORAGE_TOKEN_NAME } from '../constants/apiConstants';
+import { apiURL as baseUrl } from '../constants/apiConstants';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      const token =
-        (getState() as RootState).auth.accessToken || localStorage[LOCAL_STORAGE_TOKEN_NAME];
+      const token = (getState() as RootState).auth.accessToken;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

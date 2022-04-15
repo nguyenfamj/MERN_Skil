@@ -80,7 +80,7 @@ const LoginForm = () => {
     if (usernameRegex.test(loginStates.username) && passwordRegex.test(loginStates.password)) {
       try {
         const response: loginAuthResponse = await login(loginStates).unwrap();
-        console.log(response);
+
         dispatch(setCredentials({ accessToken: response.accessToken }));
         if (response.success) {
           navigate('/dashboard');

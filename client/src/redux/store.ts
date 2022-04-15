@@ -1,13 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
+
+// Import reducer
 import { authApi } from './services/authApi';
-import authReducer from './slices/authSlice';
+import { persistedRootReducer } from './combinedReducers';
 
 export const store = configureStore({
-  reducer: {
-    [authApi.reducerPath]: authApi.reducer,
-    auth: authReducer,
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware),
+  reducer: persistedRootReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(authApi.middleware),
 });
 
 // Export the RootState and AppDispatch types

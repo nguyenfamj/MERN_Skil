@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
 import { userResponseModel } from '../../interfaces/apiResponse';
-import { LOCAL_STORAGE_TOKEN_NAME } from '../constants/apiConstants';
 
 interface authState {
   user: userResponseModel | null;
@@ -20,15 +20,18 @@ export const authSlice = createSlice({
     ) => {
       state.accessToken = accessToken;
       state.isAuthenticated = true;
-      localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, accessToken);
     },
     setUser: (state, { payload: { user } }: PayloadAction<{ user: userResponseModel }>) => {
       state.isAuthenticated = true;
       state.user = user;
-      state.accessToken = localStorage[LOCAL_STORAGE_TOKEN_NAME];
+    },
+    logout: (state) => {
+      state = initialState;
+      storage.removeItem('persist:root');
+      storage.removeItem('persist:auth');
     },
   },
 });
 
-export const { setCredentials, setUser } = authSlice.actions;
+export const { setCredentials, setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

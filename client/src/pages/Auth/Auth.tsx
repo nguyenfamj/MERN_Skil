@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 // Import Login and Register pages
 import LoginForm from './LoginForm/LoginForm';

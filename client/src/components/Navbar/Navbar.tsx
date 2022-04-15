@@ -1,17 +1,51 @@
-import { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { XIcon, MenuIcon, StatusOnlineIcon, CogIcon } from '@heroicons/react/solid';
 import { ReactComponent as BrandLogo } from '../../assets/svg/logo.svg';
 
 // Import from React-router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+// Import interfaces
+import { navigationProps } from '../../interfaces/navigation';
+
+// Import from RTK
+import { useAppDispatch } from '../../hooks/rtkHook';
+import { logout } from '../../redux/slices/authSlice';
 
 const Navbar = () => {
-  const navigation = [
-    { id: 1, name: 'Dashboard', href: '/dashboard', current: true },
-    { id: 2, name: 'About', href: '/about', current: false },
-  ];
+  // Get current window location
+  const currentHref = window.location.pathname;
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [navigation, setNavigation] = useState<navigationProps[]>([
+    { id: 1, name: 'Dashboard', href: '/dashboard', current: false },
+    { id: 2, name: 'About', href: '/about', current: false },
+  ]);
+
+  // To keep UI in the same current page
+  useEffect(() => {
+    const updateNavUi = async () => {
+      setNavigation(
+        navigation.map((el) =>
+          currentHref === el.href ? { ...el, current: true } : { ...el, current: false }
+        )
+      );
+    };
+
+    updateNavUi();
+  }, [currentHref]);
+
+  // Handle logout
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate(0);
+  };
+
+  // classNames filter
   const classNames = (...classes: (false | null | undefined | string)[]) =>
     classes.filter(Boolean).join(' ');
 
@@ -34,10 +68,10 @@ const Navbar = () => {
 
               {/* Logo and navigation */}
               <div className='flex items-center justify-center flex-1 sm:justify-start'>
-                <div className='flex items-center flex-shrink-0'>
+                <Link to='/dashboard' className='flex items-center flex-shrink-0'>
                   <BrandLogo className='block w-auto h-10 fill-indigo-900 lg:hidden' />
                   <h1 className='hidden text-3xl font-black text-indigo-900 lg:block'>STICKI</h1>
-                </div>
+                </Link>
                 <div className='hidden sm:block sm:ml-8'>
                   <div className='flex space-x-4'>
                     {navigation.map((item) => (
@@ -61,12 +95,14 @@ const Navbar = () => {
               {/* Notification button and profile */}
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 sm:inset-auto sm:static sm:pr-0 sm:ml-6'>
                 <button
+                  title='notification'
                   type='button'
                   className='p-1 text-black rounded-full hover:bg-black/60 hover:text-white'
                 >
                   <StatusOnlineIcon className='w-6 h-6' />
                 </button>
                 <button
+                  title='setting'
                   type='button'
                   className='p-1 text-black rounded-full hover:bg-black/60 hover:text-white'
                 >
@@ -99,7 +135,7 @@ const Navbar = () => {
                           <Link
                             className={classNames(
                               active ? 'bg-black/30 text-white' : '',
-                              'block text-base px-4 py-1 rounded-sm font-semibold'
+                              'block text-base px-4 py-1 rounded-sm font-medium'
                             )}
                             to='/profile'
                           >
@@ -112,8 +148,9 @@ const Navbar = () => {
                           <button
                             className={classNames(
                               active ? 'bg-black/30 text-white' : '',
-                              'block text-base px-4 py-1 rounded-sm w-full text-left font-semibold'
+                              'block text-base px-4 py-1 rounded-sm w-full text-left font-medium'
                             )}
+                            onClick={handleLogout}
                           >
                             Log out
                           </button>
@@ -135,10 +172,9 @@ const Navbar = () => {
                       : ' hover:text-white hover:bg-black/60',
                     'mt-2 block py-2 px-3  w-full  font-semibold rounded-md'
                   )}
+                  key={item.id}
                 >
-                  <Link to={item.href} key={item.id}>
-                    {item.name}
-                  </Link>
+                  <Link to={item.href}>{item.name}</Link>
                 </Disclosure.Button>
               ))}
             </div>
