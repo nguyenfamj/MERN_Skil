@@ -6,7 +6,7 @@ import {
   authenticateResponse,
   loginAuthResponse,
   registerAuthResponse,
-} from '../../interfaces/apiResponse';
+} from '../../interfaces/authApiResponse';
 import { loginAuth, registerAuth } from '../../interfaces/formInputs';
 
 // Import RootState
@@ -40,4 +40,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useAuthenticateQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLazyAuthenticateQuery } = authApi;

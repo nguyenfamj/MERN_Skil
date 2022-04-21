@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Import Form Components
 import GlassInput from './GlassInput/GlassInput';
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // Import Register Interface
 import { inputMetas, onChangeType, registerAuth } from '../../../interfaces/formInputs';
-import { registerAuthResponse, errorAlert } from '../../../interfaces/apiResponse';
+import { registerAuthResponse, errorAlert } from '../../../interfaces/authApiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
@@ -124,7 +124,7 @@ const Register = () => {
     <>
       {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
       <GlassWrapper>
-        <h1 className='text-4xl font-black text-sky-500 translate-y-14'>STICKI</h1>
+        <h1 className='text-4xl font-black text-sky-500 translate-y-14'>SKIL</h1>
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
           <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />

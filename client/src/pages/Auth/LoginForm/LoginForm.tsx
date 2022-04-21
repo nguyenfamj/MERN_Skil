@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // Import Login Interface
 import { inputMetas, onChangeType, loginAuth } from '../../../interfaces/formInputs';
-import { loginAuthResponse, errorAlert } from '../../../interfaces/apiResponse';
+import { loginAuthResponse, errorAlert } from '../../../interfaces/authApiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
@@ -29,7 +29,7 @@ const LoginForm = () => {
       errorMessage:
         "Username must be more than one character shouldn't include any special character!",
       label: 'Username',
-      pattern: '^[A-Za-z0-9]{2,}$',
+      pattern: '^[A-Za-z0-9]{1,}$',
       required: true,
     },
     {
@@ -68,12 +68,12 @@ const LoginForm = () => {
   // Handle login function
   // // useMutation hooks
   const dispatch = useAppDispatch();
-  const [login, { isLoading, isSuccess }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   // // onClick button handler
   const loginHandler = async () => {
     setAlert(null);
-    const usernameRegex: RegExp = /^[A-Za-z0-9]{2,}$/;
+    const usernameRegex: RegExp = /^[A-Za-z0-9]{1,}$/;
     const passwordRegex: RegExp =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
@@ -95,7 +95,7 @@ const LoginForm = () => {
     <>
       {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
       <GlassWrapper>
-        <h1 className='text-4xl font-black translate-y-14 text-sky-500'>STICKI</h1>
+        <h1 className='text-4xl font-black translate-y-14 text-sky-500'>SKIL</h1>
 
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>

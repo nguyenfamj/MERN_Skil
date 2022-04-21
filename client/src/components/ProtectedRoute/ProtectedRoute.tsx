@@ -14,7 +14,7 @@ const ProtectedRoute = ({ path, element: Element }: ProtectedRouteProps) => {
 
   if (isAuthenticated) {
     return (
-      <div className='w-screen h-screen bg-radial-gradient-background'>
+      <div className='w-screen min-h-screen bg-radial-gradient-background'>
         <Navbar />
         {Element}
       </div>

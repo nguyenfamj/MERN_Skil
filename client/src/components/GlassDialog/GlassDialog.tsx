@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { errorAlert } from '../../interfaces/apiResponse';
+import { errorAlert } from '../../interfaces/authApiResponse';
 
 const GlassDialog = ({ title, message }: errorAlert) => {
   const [isOpen, setIsOpen] = useState(true);

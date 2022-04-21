@@ -5,7 +5,7 @@ const Skill = require('../models/Skill');
 const getSkills = async (req, res) => {
   try {
     const allSkills = await Skill.find({ user: req.userID });
-    res.json({ success: true, allSkills });
+    res.json({ success: true, skills: allSkills });
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, message: 'Internal Server Error' });

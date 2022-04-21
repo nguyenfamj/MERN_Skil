@@ -8,6 +8,7 @@ import { Authentication } from './components/Authentication/Authentication';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
 import About from './pages/About/About';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           element={<ProtectedRoute path='/login' element={<Dashboard />} />}
         />
         <Route path='/about' element={<ProtectedRoute path='/login' element={<About />} />} />
-        <Route path='/profile' element={<ProtectedRoute path='/login' element={<About />} />} />
+        <Route path='/profile' element={<ProtectedRoute path='/login' element={<Profile />} />} />
       </Routes>
     </Router>
   );

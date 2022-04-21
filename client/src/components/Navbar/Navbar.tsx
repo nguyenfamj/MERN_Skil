@@ -50,14 +50,14 @@ const Navbar = () => {
     classes.filter(Boolean).join(' ');
 
   return (
-    <Disclosure as='nav' className=''>
+    <Disclosure as='nav' className='mb-14'>
       {({ open }) => (
         <>
           <div className='w-screen px-2 mx-auto sm:px-6 lg:px-8'>
             <div className='relative inset-y-0 flex items-center justify-between h-16 '>
               {/* Dropdown button for small screen */}
               <div className='absolute left-0 flex items-center sm:hidden'>
-                <Disclosure.Button className='inline-flex items-center justify-center p-2 text-black rounded-md focus:outline-none '>
+                <Disclosure.Button className='inline-flex items-center justify-center text-black rounded-md focus:outline-none '>
                   {open ? (
                     <XIcon className='block w-7 h-7' aria-hidden='true' />
                   ) : (
@@ -70,7 +70,7 @@ const Navbar = () => {
               <div className='flex items-center justify-center flex-1 sm:justify-start'>
                 <Link to='/dashboard' className='flex items-center flex-shrink-0'>
                   <BrandLogo className='block w-auto h-10 fill-indigo-900 lg:hidden' />
-                  <h1 className='hidden text-3xl font-black text-indigo-900 lg:block'>STICKI</h1>
+                  <h1 className='hidden text-3xl font-black text-indigo-900 lg:block'>SKIL</h1>
                 </Link>
                 <div className='hidden sm:block sm:ml-8'>
                   <div className='flex space-x-4'>
@@ -95,11 +95,12 @@ const Navbar = () => {
               {/* Notification button and profile */}
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 sm:inset-auto sm:static sm:pr-0 sm:ml-6'>
                 <button
-                  title='notification'
+                  title='Notification'
                   type='button'
-                  className='p-1 text-black rounded-full hover:bg-black/60 hover:text-white'
+                  className='flex items-center justify-center p-1 text-black rounded-full hover:bg-black/60 hover:text-white'
                 >
-                  <StatusOnlineIcon className='w-6 h-6' />
+                  <span className='absolute inline-flex rounded-full w-7 h-7 bg-slate-500 opacity-20 animate-ping '></span>
+                  <StatusOnlineIcon className='relative inline-flex w-6 h-6 ' />
                 </button>
                 <button
                   title='setting'

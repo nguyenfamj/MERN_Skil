@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
-import { userResponseModel } from '../../interfaces/apiResponse';
+import { userResponseModel } from '../../interfaces/authApiResponse';
 
 interface authState {
   user: userResponseModel | null;
