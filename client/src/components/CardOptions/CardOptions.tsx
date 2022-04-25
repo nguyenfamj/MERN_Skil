@@ -2,7 +2,11 @@ import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { DotsHorizontalIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
 
-const CardOptions = () => {
+interface propTypes {
+  handleButtonWithData: () => void;
+}
+
+const CardOptions = ({ handleButtonWithData }: propTypes) => {
   return (
     <Popover className='relative'>
       {({ open }) => (
@@ -29,8 +33,8 @@ const CardOptions = () => {
                   {/* Edit button */}
                   <button
                     type='button'
-                    onClick={() => {}}
                     className='flex items-center px-3 py-1 rounded-md w-28 hover:cursor-pointer hover:bg-slate-300'
+                    onClick={handleButtonWithData}
                   >
                     <PencilIcon className='w-4 h-4 ' />
                     <p className='ml-4 text-sm'>Edit</p>

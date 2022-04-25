@@ -1,43 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { Tab } from '@headlessui/react';
+import { useEffect, useState, Fragment } from 'react';
+import { Tab, Transition, Dialog } from '@headlessui/react';
 
 // Import from RTK query
-import { useGetSkillsQuery } from '../../redux/services/skillApi';
+import { useGetSkillsQuery, useUpdateSkillMutation } from '../../redux/services/skillApi';
 
 //
 import { statusEnum, skillModel } from '../../interfaces/skillApiResponse';
+import { skillInput } from '../../interfaces/formInputs';
 
 // Import components
 import SkillTab from '../../components/SkillTab/SkillTab';
 import SkillAdd from '../../components/SkillAdd/SkillAdd';
+import SkillForm from '../../components/SkillForm/SkillForm';
 
 const Dashboard = () => {
-  const { data, isFetching, isLoading, error } = useGetSkillsQuery();
+  type panelTypes = { id: number; name: string | statusEnum; data: skillModel[] | undefined };
 
-  const tabNames = [
-    { id: 1, name: 'All skills' },
-    { id: 2, name: statusEnum.Planned },
-    { id: 3, name: statusEnum.InProgress },
-    { id: 4, name: statusEnum.Done },
-  ];
+  const { data, isFetching, isLoading, error, isSuccess, refetch } = useGetSkillsQuery();
+  const [tabPanels, setTabPanels] = useState<panelTypes[]>([
+    { id: 1, name: 'All skills', data: [] },
+    { id: 2, name: statusEnum.Planned, data: [] },
+    { id: 3, name: statusEnum.InProgress, data: [] },
+    { id: 4, name: statusEnum.Done, data: [] },
+  ]);
 
-  // Prepare data for each panels
-  let plannedSkills: skillModel[] = [],
-    inProgressSkills: skillModel[] = [],
-    doneSkills: skillModel[] = [];
+  // State for triggering refetch
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
 
-  const prepareArray = async (): Promise<void> => {
-    await data?.skills.forEach((skill) => {
-      skill.status === statusEnum.Planned
-        ? plannedSkills.push(skill)
-        : skill.status === statusEnum.InProgress
-        ? inProgressSkills.push(skill)
-        : doneSkills.push(skill);
-    });
+  useEffect(() => {
+    if (isRefetch) {
+      refetch();
+      setIsRefetch(false);
+    }
+  }, [isRefetch, refetch]);
+
+  useEffect(() => {
+    const prepareArray = async (): Promise<void> => {
+      const duplicatedTabPanels = [...tabPanels];
+
+      // Set default value
+      duplicatedTabPanels[0].data = data?.skills;
+      duplicatedTabPanels[1].data = [];
+      duplicatedTabPanels[2].data = [];
+      duplicatedTabPanels[3].data = [];
+
+      await data?.skills.forEach((skill) => {
+        skill.status === statusEnum.Planned
+          ? duplicatedTabPanels[1].data?.push(skill)
+          : skill.status === statusEnum.InProgress
+          ? duplicatedTabPanels[2].data?.push(skill)
+          : duplicatedTabPanels[3].data?.push(skill);
+      });
+
+      setTabPanels(duplicatedTabPanels);
+    };
+    prepareArray();
+  }, [isSuccess, data]);
+
+  // State for Edit form
+  const [editForm, setEditForm] = useState<{ isOpen: boolean; skill: skillInput; skillId: string }>(
+    {
+      isOpen: false,
+      skill: {
+        title: '',
+        description: '',
+        url: '',
+        status: statusEnum.Planned,
+      },
+      skillId: '',
+    }
+  );
+  // Handle open and close form
+  const closeForm = (): void => {
+    setEditForm({ ...editForm, isOpen: false });
   };
-  prepareArray();
+  // Handle edit function with API RTK Query
+  const [updateSkill] = useUpdateSkillMutation();
 
-  useEffect(() => {}, []);
+  const handleEditButton = ({ skill, skillId }: { skill: skillInput; skillId: string }): void => {
+    setEditForm({ isOpen: true, skill, skillId });
+  };
 
   // Function to control UI from tailwindCSS
   function classNames(...classes: (false | null | undefined | string)[]) {
@@ -53,7 +95,7 @@ const Dashboard = () => {
         <Tab.Group>
           <div className='sm:flex sm:items-center sm:justify-between '>
             <Tab.List className='flex justify-around py-1 rounded-lg bg-black/10 sm:w-[560px] w-[300px]'>
-              {tabNames.map((tab) => (
+              {tabPanels.map((tab) => (
                 <Tab
                   key={tab.id}
                   className={({ selected }) =>
@@ -69,7 +111,7 @@ const Dashboard = () => {
                 </Tab>
               ))}
             </Tab.List>
-            <SkillAdd />
+            <SkillAdd setIsRefetch={setIsRefetch} />
           </div>
 
           {isFetching || isLoading ? (
@@ -93,18 +135,61 @@ const Dashboard = () => {
             </div>
           ) : error ? (
             <div className='flex items-center justify-center h-80'>
-              <p className='text-base text-indigo-900'>Cannot load data, please try again</p>
+              <p className='text-base text-indigo-900'>Couldn't load data, please try again</p>
             </div>
           ) : (
             <Tab.Panels>
-              <SkillTab skillArray={data?.skills} />
-              <SkillTab skillArray={plannedSkills} />
-              <SkillTab skillArray={inProgressSkills} />
-              <SkillTab skillArray={doneSkills} />
+              {tabPanels.map((panel) => (
+                <SkillTab
+                  skillArray={panel.data}
+                  key={panel.id}
+                  handleEditButton={handleEditButton}
+                />
+              ))}
             </Tab.Panels>
           )}
         </Tab.Group>
       </div>
+
+      {/* Edit Form */}
+      <Transition as={Fragment} show={editForm.isOpen}>
+        <Dialog as='div' className='fixed inset-0 z-10' onClose={closeForm}>
+          <div className='min-h-screen'>
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0'
+              enterTo='opacity-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
+            >
+              <Dialog.Overlay className='fixed inset-0 bg-slate-700/10 backdrop-blur-sm ' />
+            </Transition.Child>
+
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-50 scale-95'
+              enterTo='opacity-100 scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 '
+              leaveTo='opacity-50 '
+            >
+              <div className='flex items-center justify-center w-screen h-screen '>
+                <SkillForm
+                  initialStates={editForm.skill}
+                  formTitle='Edit skill'
+                  closeModal={closeForm}
+                  mutationFn={updateSkill}
+                  updateId={editForm.skillId}
+                  setIsRefetch={setIsRefetch}
+                />
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </section>
   );
 };

@@ -6,23 +6,17 @@
 @layer utilities {
   /* width */
   ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.4rem;
+    height: 0.4rem;
   }
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: #000000;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #9e8375;
-    border-radius: 100vh;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5e4d44;
   }
 }

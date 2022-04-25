@@ -7,6 +7,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { authApi } from './services/authApi';
 import authReducer from './slices/authSlice';
 import { skillApi } from './services/skillApi';
+import appReducer from './slices/appSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -16,13 +17,14 @@ const authPersistConfig = {
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: [authApi.reducerPath, skillApi.reducerPath],
+  blacklist: [authApi.reducerPath, skillApi.reducerPath, 'app'],
 };
 
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   auth: persistReducer(authPersistConfig, authReducer),
   [skillApi.reducerPath]: skillApi.reducer,
+  app: appReducer,
 });
 
 export const persistedRootReducer = persistReducer(rootPersistConfig, rootReducer);

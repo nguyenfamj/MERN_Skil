@@ -19,3 +19,14 @@ export interface getSkillsResponse {
   success: boolean;
   skills: skillModel[];
 }
+
+export interface createSkillResponse {
+  success: boolean;
+  message: string;
+  skillContent: skillModel;
+}
+
+export interface updateSkillResponse {
+  success: boolean;
+  message: string;
+}

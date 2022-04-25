@@ -3,7 +3,7 @@ import React from 'react';
 interface propTypes {
   title: string;
   onClick?: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const GlassButton = ({ title, onClick, isLoading }: propTypes) => {

@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import { Fragment, SetStateAction, useRef, useState } from 'react';
 
 // Import from HeadlessUI
 import { Transition, Dialog } from '@headlessui/react';
@@ -11,12 +11,16 @@ import SkillForm from '../SkillForm/SkillForm';
 import { skillInput } from '../../interfaces/formInputs';
 import { statusEnum } from '../../interfaces/skillApiResponse';
 
-interface PropTypes {
-  children?: React.ReactNode;
+// Import from RTK-Query
+import { useCreateSkillMutation } from '../../redux/services/skillApi';
+
+interface propTypes {
+  setIsRefetch: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const SkillAdd = ({ children }: PropTypes) => {
+const SkillAdd = ({ setIsRefetch }: propTypes) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const initialFocusRef = useRef(null);
 
   const openModal = (): void => {
@@ -35,21 +39,14 @@ const SkillAdd = ({ children }: PropTypes) => {
     url: '',
   };
 
+  // Handle functions with api RTK Query
+  const [createSkill] = useCreateSkillMutation();
+
   return (
     <>
       {!isOpen && (
         <div>
-          <Transition
-            show={!isOpen}
-            enter='transition-opacity duration-150'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
-            leave='transition-opacity duration-150'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'
-          >
-            <Button openModal={openModal} />
-          </Transition>
+          <Button openModal={openModal} />
         </div>
       )}
       <Transition as={Fragment} show={isOpen}>
@@ -75,17 +72,19 @@ const SkillAdd = ({ children }: PropTypes) => {
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'
-              enterFrom='translate-y-3 opacity-90'
-              enterTo='translate-y-0 opacity-100'
+              enterFrom='opacity-50 scale-95'
+              enterTo='opacity-100 scale-100'
               leave='ease-in duration-200'
-              leaveFrom='translate-y-0 '
-              leaveTo='translate-y-3 '
+              leaveFrom='opacity-100 '
+              leaveTo='opacity-50 '
             >
               <div className='flex items-center justify-center w-screen h-screen '>
                 <SkillForm
                   initialStates={initialFormStates}
                   formTitle='Create Skill'
                   closeModal={closeModal}
+                  mutationFn={createSkill}
+                  setIsRefetch={setIsRefetch}
                 />
               </div>
             </Transition.Child>

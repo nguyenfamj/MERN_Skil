@@ -10,9 +10,20 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import About from './pages/About/About';
 import Profile from './pages/Profile/Profile';
 
+//
+import GlassDialog from './components/GlassDialog/GlassDialog';
+
+// Import from RTK
+import { useAppSelector } from './hooks/rtkHook';
+
 function App() {
+  const { notification } = useAppSelector((state) => state.app);
+
   return (
     <Router>
+      {notification.title === '' && notification.message === '' ? null : (
+        <GlassDialog title={notification.title} message={notification.message} />
+      )}
       <Authentication />
       <Routes>
         <Route path='/*' element={<Navigate replace to='/login' />} />
