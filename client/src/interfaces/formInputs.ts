@@ -46,6 +46,10 @@ export interface updateSkillQuery {
   _id: string;
   updatedSkill: skillInput;
 }
+
+export interface deleteSkillQuery {
+  _id: string;
+}
 export interface glassFormProps {
   title?: string;
   inputs: inputMetas[];

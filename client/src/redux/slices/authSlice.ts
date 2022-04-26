@@ -3,12 +3,16 @@ import storage from 'redux-persist/lib/storage';
 import { userResponseModel } from '../../interfaces/authApiResponse';
 
 interface authState {
-  user: userResponseModel | null;
+  user: userResponseModel;
   accessToken: string | null;
   isAuthenticated: boolean;
 }
 
-const initialState: authState = { user: null, accessToken: null, isAuthenticated: false };
+const initialState: authState = {
+  user: { __v: 0, _id: '', firstname: '', lastname: '', username: '', createdAt: new Date() },
+  accessToken: null,
+  isAuthenticated: false,
+};
 
 export const authSlice = createSlice({
   name: 'auth',

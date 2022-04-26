@@ -4,9 +4,10 @@ import { DotsHorizontalIcon, PencilIcon, TrashIcon } from '@heroicons/react/outl
 
 interface propTypes {
   handleButtonWithData: () => void;
+  handleDeleteButton: () => Promise<void>;
 }
 
-const CardOptions = ({ handleButtonWithData }: propTypes) => {
+const CardOptions = ({ handleButtonWithData, handleDeleteButton }: propTypes) => {
   return (
     <Popover className='relative'>
       {({ open }) => (
@@ -42,7 +43,7 @@ const CardOptions = ({ handleButtonWithData }: propTypes) => {
                   {/* Delete button */}
                   <button
                     type='button'
-                    onClick={() => {}}
+                    onClick={handleDeleteButton}
                     className='flex items-center px-3 py-1 rounded-md w-28 hover:cursor-pointer hover:bg-slate-300'
                   >
                     <TrashIcon className='w-4 h-4 ' />

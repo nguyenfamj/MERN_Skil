@@ -6,7 +6,7 @@ interface propTypes {
 
 const FormButton = ({ className, onClick, title }: propTypes) => {
   return (
-    <button className={`${className} px-3 py-2 rounded-lg`} onClick={onClick}>
+    <button className={`${className} sm:px-3 sm:py-2 px-2 py-1 rounded-lg`} onClick={onClick}>
       <span>{title}</span>
     </button>
   );

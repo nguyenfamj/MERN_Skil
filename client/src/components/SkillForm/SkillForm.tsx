@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 
 // Import interface
 import { inputMetas, onChangeType, skillInput } from '../../interfaces/formInputs';
@@ -20,23 +20,14 @@ interface propTypes {
   formTitle: string;
   closeModal: () => void;
   mutationFn: Function;
-
   updateId?: string;
-  setIsRefetch: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const SkillForm = ({
-  initialStates,
-  formTitle,
-  closeModal,
-  mutationFn,
-  updateId,
-  setIsRefetch,
-}: propTypes) => {
+const SkillForm = ({ initialStates, formTitle, closeModal, mutationFn, updateId }: propTypes) => {
   // Form States and handling
   const [formStates, setFormStates] = useState<skillInput>(initialStates);
 
-  // // Handle changes
+  //  Handle changes
   const onChange: onChangeType = (e) => {
     setFormStates({ ...formStates, [e.target.name]: e.target.value });
   };
@@ -62,7 +53,6 @@ const SkillForm = ({
           dispatch(setNotification({ title: 'Success', message: response.message }));
           response.success && closeModal();
         }
-        setIsRefetch(true);
       } catch (error) {
         dispatch(setNotification({ title: 'Error!', message: error?.data.message }));
       }
@@ -106,15 +96,15 @@ const SkillForm = ({
   ];
 
   return (
-    <div className=' transform  bg-white/90 backdrop-blur-lg sm:w-[500px] sm:min-h-[700px] flex flex-col items-center justify-between rounded-xl overflow-y-auto z-10 border-b border-r border-white/60 shadow-2xl p-4'>
-      <div className='relative flex items-center justify-center w-full border-b-2 sm:h-16 border-zinc-400'>
-        <h2 className='font-bold text-indigo-900 sm:text-2xl'>{formTitle}</h2>
+    <div className=' transform  bg-white/90 backdrop-blur-lg sm:w-[500px] sm:min-h-[700px] w-11/12 min-h-[550px]   flex flex-col items-center justify-between rounded-xl overflow-y-auto z-10 border-b border-r border-white/60 shadow-2xl p-4'>
+      <div className='relative flex items-center justify-center w-full h-12 border-b-2 sm:h-16 border-zinc-400'>
+        <h2 className='text-xl font-bold text-indigo-900 sm:text-2xl'>{formTitle}</h2>
         <button
           title='Close'
           onClick={closeModal}
-          className='absolute right-0 flex items-center justify-center rounded-full ring-2 ring-zinc-400 w-7 h-7 text-zinc-400 hover:ring-black hover:text-black '
+          className='absolute right-0 flex items-center justify-center w-6 h-6 rounded-full ring-2 ring-zinc-400 sm:w-7 sm:h-7 text-zinc-400 hover:ring-black hover:text-black '
         >
-          <XIcon className='w-6 h-6' />
+          <XIcon className='w-5 h-5 sm:w-6 sm:h-6' />
         </button>
       </div>
       <form className='w-full'>
@@ -128,7 +118,7 @@ const SkillForm = ({
                     title={title}
                     {...props}
                     onChange={onChange}
-                    className='text-sm border-2 resize-none border-zinc-400 sm:h-24 sm:p-3 rounded-xl placeholder:text-sm focus:outline-none focus:border-indigo-900 focus:ring-1 focus:ring-indigo-500'
+                    className='h-20 p-2 text-sm border-2 resize-none border-zinc-400 sm:h-24 sm:p-3 rounded-xl placeholder:text-sm focus:outline-none focus:border-indigo-900 focus:ring-1 focus:ring-indigo-500'
                   />
                 ) : (
                   <input
@@ -136,7 +126,7 @@ const SkillForm = ({
                     type={type}
                     title={title}
                     onChange={onChange}
-                    className={`text-sm border-2 border-zinc-400  sm:p-3 rounded-xl placeholder:text-sm focus:outline-none focus:border-indigo-900 focus:ring-1 focus:ring-indigo-500 ${
+                    className={`text-sm border-2 border-zinc-400  sm:p-3 p-2 rounded-xl placeholder:text-sm focus:outline-none focus:border-indigo-900 focus:ring-1 focus:ring-indigo-500 ${
                       props.value === '' ? '' : 'invalid:border-red-500'
                     } focus:invalid:border-red-500 focus:invalid:ring-red-400 invalid:text-red-400 peer`}
                   />
@@ -149,7 +139,7 @@ const SkillForm = ({
           })}
           <div className='space-y-2 top-16'>
             <label className='font-semibold'>Status</label>
-            <StatusList setFormStates={setFormStates} />
+            <StatusList setFormStates={setFormStates} initialStatus={initialStates.status} />
           </div>
         </div>
       </form>

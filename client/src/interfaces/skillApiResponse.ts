@@ -30,3 +30,9 @@ export interface updateSkillResponse {
   success: boolean;
   message: string;
 }
+
+export interface deleteSkillResponse {
+  success: boolean;
+  message: string;
+  skill: skillModel;
+}

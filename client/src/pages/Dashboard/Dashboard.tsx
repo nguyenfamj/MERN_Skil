@@ -16,23 +16,13 @@ import SkillForm from '../../components/SkillForm/SkillForm';
 const Dashboard = () => {
   type panelTypes = { id: number; name: string | statusEnum; data: skillModel[] | undefined };
 
-  const { data, isFetching, isLoading, error, isSuccess, refetch } = useGetSkillsQuery();
+  const { data, isFetching, isLoading, error } = useGetSkillsQuery();
   const [tabPanels, setTabPanels] = useState<panelTypes[]>([
     { id: 1, name: 'All skills', data: [] },
     { id: 2, name: statusEnum.Planned, data: [] },
     { id: 3, name: statusEnum.InProgress, data: [] },
     { id: 4, name: statusEnum.Done, data: [] },
   ]);
-
-  // State for triggering refetch
-  const [isRefetch, setIsRefetch] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isRefetch) {
-      refetch();
-      setIsRefetch(false);
-    }
-  }, [isRefetch, refetch]);
 
   useEffect(() => {
     const prepareArray = async (): Promise<void> => {
@@ -55,7 +45,7 @@ const Dashboard = () => {
       setTabPanels(duplicatedTabPanels);
     };
     prepareArray();
-  }, [isSuccess, data]);
+  }, [data]);
 
   // State for Edit form
   const [editForm, setEditForm] = useState<{ isOpen: boolean; skill: skillInput; skillId: string }>(
@@ -111,7 +101,7 @@ const Dashboard = () => {
                 </Tab>
               ))}
             </Tab.List>
-            <SkillAdd setIsRefetch={setIsRefetch} />
+            <SkillAdd />
           </div>
 
           {isFetching || isLoading ? (
@@ -136,6 +126,12 @@ const Dashboard = () => {
           ) : error ? (
             <div className='flex items-center justify-center h-80'>
               <p className='text-base text-indigo-900'>Couldn't load data, please try again</p>
+            </div>
+          ) : data?.skills.length === 0 ? (
+            <div className='flex items-center justify-center h-80'>
+              <p className='text-base text-indigo-900'>
+                Couldn't find any skills, please add more by clicking plus(+) button
+              </p>
             </div>
           ) : (
             <Tab.Panels>
@@ -183,7 +179,6 @@ const Dashboard = () => {
                   closeModal={closeForm}
                   mutationFn={updateSkill}
                   updateId={editForm.skillId}
-                  setIsRefetch={setIsRefetch}
                 />
               </div>
             </Transition.Child>

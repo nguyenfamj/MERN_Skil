@@ -8,7 +8,6 @@ import { loginAuthResponse, errorAlert } from '../../../interfaces/authApiRespon
 import GlassForm from '../../../components/GlassForm/GlassForm';
 import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
-import GlassDialog from '../../../components/GlassDialog/GlassDialog';
 
 // Import from react-router
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../../redux/services/authApi';
 import { useAppDispatch } from '../../../hooks/rtkHook';
 import { setCredentials } from '../../../redux/slices/authSlice';
+import { setNotification } from '../../../redux/slices/appSlice';
 
 const LoginForm = () => {
   // Inputs data
@@ -54,9 +54,6 @@ const LoginForm = () => {
     password: '',
   });
 
-  // Error State
-  const [alert, setAlert] = useState<errorAlert | null>(null);
-
   // onChange function to mutate states
   const onChange: onChangeType = (e) => {
     setLoginStates({
@@ -72,7 +69,6 @@ const LoginForm = () => {
 
   // // onClick button handler
   const loginHandler = async () => {
-    setAlert(null);
     const usernameRegex: RegExp = /^[A-Za-z0-9]{1,}$/;
     const passwordRegex: RegExp =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -82,27 +78,28 @@ const LoginForm = () => {
         const response: loginAuthResponse = await login(loginStates).unwrap();
 
         dispatch(setCredentials({ accessToken: response.accessToken }));
+
         if (response.success) {
+          dispatch(setNotification({ title: 'Login successfully', message: response.message }));
           navigate('/dashboard');
         }
       } catch (error) {
-        setAlert({ title: 'Login Failed', message: error.data.message });
+        dispatch(setNotification({ title: 'Login failed', message: error?.data.message }));
       }
     }
   };
 
   return (
     <>
-      {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
       <GlassWrapper>
-        <h1 className='text-4xl font-black translate-y-14 text-sky-500'>SKIL</h1>
+        <h1 className='relative text-4xl font-black top-14 text-sky-500'>SKIL</h1>
 
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
           <GlassForm inputs={inputs} onChange={onChange} values={loginStates} />
           <GlassButton title='Login' onClick={loginHandler} isLoading={isLoading}></GlassButton>
         </div>
-        <p className='pb-6 text-sm text-indigo-900'>
+        <p className='mb-32 text-sm text-indigo-900 sm:mb-6'>
           Don't have an account?
           <Link to='/register' className='underline'>
             Register

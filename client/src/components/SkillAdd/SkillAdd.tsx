@@ -14,11 +14,9 @@ import { statusEnum } from '../../interfaces/skillApiResponse';
 // Import from RTK-Query
 import { useCreateSkillMutation } from '../../redux/services/skillApi';
 
-interface propTypes {
-  setIsRefetch: React.Dispatch<SetStateAction<boolean>>;
-}
+interface propTypes {}
 
-const SkillAdd = ({ setIsRefetch }: propTypes) => {
+const SkillAdd = ({}: propTypes) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const initialFocusRef = useRef(null);
@@ -84,7 +82,6 @@ const SkillAdd = ({ setIsRefetch }: propTypes) => {
                   formTitle='Create Skill'
                   closeModal={closeModal}
                   mutationFn={createSkill}
-                  setIsRefetch={setIsRefetch}
                 />
               </div>
             </Transition.Child>

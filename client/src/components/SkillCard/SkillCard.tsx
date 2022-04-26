@@ -11,6 +11,11 @@ import { formatDistanceToNow } from 'date-fns';
 //
 import { GlobeIcon } from '@heroicons/react/outline';
 
+// Import from RTK
+import { useAppDispatch } from '../../hooks/rtkHook';
+import { useDeleteSkillMutation } from '../../redux/services/skillApi';
+import { setNotification } from '../../redux/slices/appSlice';
+
 interface PropTypes {
   skill: skillModel;
   handleEditButton: ({ skill, skillId }: { skill: skillInput; skillId: string }) => void;
@@ -24,9 +29,25 @@ const SkillCard = ({ skill, handleEditButton }: PropTypes) => {
     url: skill.url,
     status: skill.status,
   };
-
+  // Edit Button
   const handleButtonWithData = (): void => {
     handleEditButton({ skill: formInitialState, skillId: skill._id });
+    console.log(formInitialState.status);
+  };
+
+  // Delete Button
+  const dispatch = useAppDispatch();
+  const [deleteSkill] = useDeleteSkillMutation();
+
+  const handleDeleteButton = async (): Promise<void> => {
+    if (window.confirm(`Are you sure you want to delete ${skill.title}?`)) {
+      try {
+        const response = await deleteSkill({ _id: skill._id }).unwrap();
+        dispatch(setNotification({ title: 'Deleted successfully', message: response.message }));
+      } catch (error) {
+        dispatch(setNotification({ title: 'Error!', message: error?.data.message }));
+      }
+    }
   };
 
   // Function to control UI from tailwindCSS
@@ -38,7 +59,7 @@ const SkillCard = ({ skill, handleEditButton }: PropTypes) => {
     <>
       <div
         className={classNames(
-          'h-48 rounded-lg bg-gradient-to-br from-white/70 via-white/60 to-white/5 ring-2 backdrop-blur-lg backdrop-filter relative sm:w-full',
+          'h-48 rounded-lg bg-gradient-to-br from-white/70 via-white/60 to-white/5 ring-2 backdrop-blur-lg backdrop-filter relative sm:w-full ',
           skill.status === statusEnum.Planned
             ? ' ring-rose-300'
             : skill.status === statusEnum.InProgress
@@ -61,12 +82,17 @@ const SkillCard = ({ skill, handleEditButton }: PropTypes) => {
           )}
         >
           <h2 className='font-semibold text-white'>{skill.status}</h2>
-          <CardOptions handleButtonWithData={handleButtonWithData} />
+          <CardOptions
+            handleButtonWithData={handleButtonWithData}
+            handleDeleteButton={handleDeleteButton}
+          />
         </div>
         <div className='px-4 mt-3 '>
-          <div className='flex items-center'>
-            <h2 className='text-2xl font-semibold text-indigo-900 capitalize'>{skill.title}</h2>
-            <div className='p-1 ml-4 rounded-md bg-slate-300/60'>
+          <div className='inline-flex flex-col '>
+            <h2 className='text-2xl font-semibold text-indigo-900 capitalize break-words break-all'>
+              {skill.title}
+            </h2>
+            <div className='px-2 py-1 rounded-md bg-slate-300/60 max-w-max'>
               <p className='text-xs'>{formatDistanceToNow(new Date(skill.createdAt))}</p>
             </div>
           </div>
@@ -82,45 +108,6 @@ const SkillCard = ({ skill, handleEditButton }: PropTypes) => {
           </a>
         </div>
       </div>
-
-      {/* <Transition as={Fragment} show={formOpen}>
-        <Dialog as='div' className='fixed inset-0 z-10' onClose={closeForm}>
-          <div className='min-h-screen'>
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-0'
-              enterTo='opacity-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100'
-              leaveTo='opacity-0'
-            >
-              <Dialog.Overlay className='fixed inset-0 bg-slate-700/10 backdrop-blur-sm ' />
-            </Transition.Child>
-
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-50 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 '
-              leaveTo='opacity-50 '
-            >
-              <div className='flex items-center justify-center w-screen h-screen '>
-                <SkillForm
-                  initialStates={formInitialState}
-                  formTitle='Create Skill'
-                  closeModal={closeForm}
-                  mutationFn={updateSkill}
-                  updateId={skill._id}
-                  setIsRefetch={setIsRefetch}
-                />
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition> */}
     </>
   );
 };

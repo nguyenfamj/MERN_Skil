@@ -2,7 +2,7 @@ import { PlusIcon } from '@heroicons/react/solid';
 
 type PropTypes = {
   className?: string;
-  openModal: () => void;
+  openModal?: () => void;
 };
 
 const SkillAddButton = ({ className, openModal }: PropTypes) => {

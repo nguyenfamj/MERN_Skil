@@ -166,17 +166,18 @@ const Navbar = () => {
           <Disclosure.Panel className='sm:hidden'>
             <div className='w-full px-2 pt-2 pb-3'>
               {navigation.map((item) => (
-                <Disclosure.Button
-                  className={classNames(
-                    item.current
-                      ? 'bg-indigo-900/90 text-white border-b-0'
-                      : ' hover:text-white hover:bg-black/60',
-                    'mt-2 block py-2 px-3  w-full  font-semibold rounded-md'
-                  )}
-                  key={item.id}
-                >
-                  <Link to={item.href}>{item.name}</Link>
-                </Disclosure.Button>
+                <Link to={item.href} key={item.id}>
+                  <Disclosure.Button
+                    className={classNames(
+                      item.current
+                        ? 'bg-indigo-900/90 text-white border-b-0'
+                        : ' hover:text-white hover:bg-black/60',
+                      'mt-2 block py-2 px-3  w-full  font-semibold rounded-md'
+                    )}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Disclosure.Panel>

@@ -3,6 +3,7 @@ import { useAppSelector } from '../../hooks/rtkHook';
 
 // Import components
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 interface ProtectedRouteProps {
   path: string;
@@ -14,9 +15,12 @@ const ProtectedRoute = ({ path, element: Element }: ProtectedRouteProps) => {
 
   if (isAuthenticated) {
     return (
-      <div className='w-screen min-h-screen bg-radial-gradient-background'>
-        <Navbar />
-        {Element}
+      <div className='relative w-screen bg-radial-gradient-background'>
+        <div className='min-h-[92vh] '>
+          <Navbar />
+          {Element}
+        </div>
+        <Footer />
       </div>
     );
   } else {

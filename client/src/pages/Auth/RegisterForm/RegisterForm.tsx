@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Import Register Interface
 import { inputMetas, onChangeType, registerAuth } from '../../../interfaces/formInputs';
-import { registerAuthResponse, errorAlert } from '../../../interfaces/authApiResponse';
+import { registerAuthResponse } from '../../../interfaces/authApiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
 import GlassButton from '../../../components/GlassForm/GlassButton/GlassButton';
 import { GlassWrapper } from '../../../components/GlassWrapper/GlassWrapper.styled';
-import GlassDialog from '../../../components/GlassDialog/GlassDialog';
 
 // Import from react-router
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../../redux/services/authApi';
 import { useAppDispatch } from '../../../hooks/rtkHook';
 import { setCredentials } from '../../../redux/slices/authSlice';
+import { setNotification } from '../../../redux/slices/appSlice';
 
 const Register = () => {
   // Input data
@@ -76,9 +76,6 @@ const Register = () => {
     lastname: '',
   });
 
-  // Error State
-  const [alert, setAlert] = useState<errorAlert | null>(null);
-
   // onChange function to mutate states
   const onChange: onChangeType = (e) => {
     setRegisterStates({
@@ -88,13 +85,12 @@ const Register = () => {
   };
 
   // Handle register function
-  // // useMutation hooks
+  // useMutation hooks
   const dispatch = useAppDispatch();
-  const [register, { isLoading, isSuccess }] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   // onClick button handler
   const registerHandler = async () => {
-    setAlert(null);
     const usernameRegex: RegExp = /^[A-Za-z0-9]{2,}$/;
     const passwordRegex: RegExp =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -112,19 +108,21 @@ const Register = () => {
         console.log(response);
         dispatch(setCredentials({ accessToken: response.accessToken }));
         if (response.success) {
+          dispatch(
+            setNotification({ title: 'Registered successfully', message: response.message })
+          );
           navigate('/login');
         }
       } catch (error) {
-        setAlert({ title: 'Register Failed', message: error.data.message });
+        dispatch(setNotification({ title: 'Error', message: error?.data.message }));
       }
     }
   };
 
   return (
     <>
-      {alert === null || <GlassDialog title={alert.title} message={alert.message} />}
       <GlassWrapper>
-        <h1 className='text-4xl font-black text-sky-500 translate-y-14'>SKIL</h1>
+        <h1 className='relative text-4xl font-black text-sky-500 top-14'>SKIL</h1>
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
           <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />
@@ -134,7 +132,7 @@ const Register = () => {
             isLoading={isLoading}
           ></GlassButton>
         </div>
-        <p className='pb-6 text-sm text-indigo-900'>
+        <p className='mb-32 text-sm text-indigo-900 sm:mb-6'>
           Already have an account?{' '}
           <Link to='/login' className='underline'>
             Login

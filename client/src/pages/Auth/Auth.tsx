@@ -33,12 +33,7 @@ const Auth = ({ authRoute }: propTypes) => {
   }, [isAuthenticated]);
 
   return (
-    <div
-      className='flex items-center justify-center w-screen h-screen bg-no-repeat bg-cover '
-      style={{
-        backgroundImage: `url(${background})`,
-      }}
-    >
+    <div className='flex items-center justify-center w-screen h-screen bg-radial-gradient-background '>
       {authRoute === 'login' && <LoginForm />}
       {authRoute === 'register' && <RegisterForm />}
     </div>

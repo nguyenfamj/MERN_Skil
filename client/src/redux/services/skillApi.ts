@@ -11,8 +11,9 @@ import {
   getSkillsResponse,
   createSkillResponse,
   updateSkillResponse,
+  deleteSkillResponse,
 } from '../../interfaces/skillApiResponse';
-import { skillInput, updateSkillQuery } from '../../interfaces/formInputs';
+import { skillInput, updateSkillQuery, deleteSkillQuery } from '../../interfaces/formInputs';
 
 // import API URL
 import { apiURL as baseUrl } from '../constants/apiConstants';
@@ -30,12 +31,15 @@ export const skillApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Skill'],
   endpoints: (builder) => ({
     createSkill: builder.mutation<createSkillResponse, skillInput>({
       query: (skillInput) => ({ url: 'skills', method: 'POST', body: skillInput }),
+      invalidatesTags: ['Skill'],
     }),
     getSkills: builder.query<getSkillsResponse, void>({
       query: () => ({ url: 'skills', method: 'GET' }),
+      providesTags: ['Skill'],
     }),
     updateSkill: builder.mutation<updateSkillResponse, updateSkillQuery>({
       query: ({ _id, updatedSkill }) => ({
@@ -43,9 +47,18 @@ export const skillApi = createApi({
         method: 'PUT',
         body: updatedSkill,
       }),
+      invalidatesTags: ['Skill'],
     }),
-    // deleteSkill: builder.mutation({}),
+    deleteSkill: builder.mutation<deleteSkillResponse, deleteSkillQuery>({
+      query: ({ _id }) => ({ url: `skills/${_id}`, method: 'DELETE' }),
+      invalidatesTags: ['Skill'],
+    }),
   }),
 });
 
-export const { useGetSkillsQuery, useCreateSkillMutation, useUpdateSkillMutation } = skillApi;
+export const {
+  useGetSkillsQuery,
+  useCreateSkillMutation,
+  useUpdateSkillMutation,
+  useDeleteSkillMutation,
+} = skillApi;

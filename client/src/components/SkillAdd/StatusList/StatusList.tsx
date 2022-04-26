@@ -2,7 +2,7 @@ import { useState, Fragment, Dispatch, SetStateAction, useEffect } from 'react';
 
 // Import components from HeadlessUI and heroicons
 import { Listbox, Transition } from '@headlessui/react';
-import { SelectorIcon, CheckIcon } from '@heroicons/react/outline';
+import { SelectorIcon } from '@heroicons/react/outline';
 
 // Import interfaces
 import { statusEnum } from '../../../interfaces/skillApiResponse';
@@ -10,9 +10,10 @@ import { skillInput } from '../../../interfaces/formInputs';
 
 interface propTypes {
   setFormStates: Dispatch<SetStateAction<skillInput>>;
+  initialStatus: statusEnum;
 }
 
-const StatusList = ({ setFormStates }: propTypes) => {
+const StatusList = ({ setFormStates, initialStatus }: propTypes) => {
   const statusList: { name: statusEnum }[] = [
     {
       name: statusEnum.Planned,
@@ -25,7 +26,7 @@ const StatusList = ({ setFormStates }: propTypes) => {
     },
   ];
 
-  const [selected, setSelected] = useState<{ name: statusEnum }>(statusList[0]);
+  const [selected, setSelected] = useState<{ name: statusEnum }>({ name: initialStatus });
 
   useEffect(() => {
     setFormStates((prevState) => ({ ...prevState, status: selected.name }));
@@ -34,7 +35,7 @@ const StatusList = ({ setFormStates }: propTypes) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className='relative mt-1'>
-        <Listbox.Button className='relative w-full text-left bg-white border-2 cursor-pointer border-zinc-400 rounded-xl sm:p-3 sm:text-sm'>
+        <Listbox.Button className='relative w-full p-2 text-left bg-white border-2 cursor-pointer border-zinc-400 rounded-xl sm:p-3 sm:text-sm'>
           <span className='block truncate'>{selected.name}</span>
           <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
             <SelectorIcon className='w-5 h-5 text-gray-400' aria-hidden='true' />
