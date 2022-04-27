@@ -22,9 +22,8 @@ connectDB(mongoURI)
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
     // Setup middlewares
-    app.use(cors());
     app.use(function (req, res, next) {
-      res.header('Access-Control-Allow-Origin', 'http://localhost:3000/');
+      res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Credentials', true);
       res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
       res.header(
@@ -34,6 +33,7 @@ connectDB(mongoURI)
       next();
     });
     app.use(express.json());
+    app.use(cors());
 
     //   Setup main application routing
     app.use('/api/auth', authRouter);
