@@ -65,7 +65,7 @@ const About = () => {
           <h2 className='text-xl font-semibold text-indigo-900'>Technology</h2>
           <div className='grid grid-cols-1 space-y-5 sm:grid-cols-2'>
             {technologyList.map((type) => (
-              <div className=''>
+              <div className='' key={type.id}>
                 <div className='font-bold'>
                   <h3>{type.title}</h3>
                 </div>
