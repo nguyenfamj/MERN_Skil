@@ -5,7 +5,7 @@ const app = express();
 // Import environment variable
 require('dotenv').config();
 const mongoURI = process.env.MONGODB_URI;
-const PORT = process.env.DEFAULT_PORT;
+const PORT = process.env.PORT || process.env.DEV_PORT;
 
 //  Import connectDB() method to setup connection with MongoDB
 const connectDB = require('./config/DatabaseConfig');

@@ -79,7 +79,7 @@ const Dashboard = () => {
   return (
     <section className='w-screen px-2 pr-4 mt-4 sm:px-6 sm:pr-8 '>
       <div className='flex'>
-        <h1 className='text-3xl font-bold text-white '>Dashboard</h1>
+        <h1 className='text-3xl font-bold text-white drop-shadow-lg'>Dashboard</h1>
       </div>
       <div className='mt-8 '>
         <Tab.Group>

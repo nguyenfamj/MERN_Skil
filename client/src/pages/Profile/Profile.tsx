@@ -7,7 +7,7 @@ const Profile = () => {
   return (
     <section className='w-screen px-2 pr-4 mt-4 sm:px-6 sm:pr-8'>
       <div className='flex'>
-        <h1 className='text-3xl font-bold text-white '>Profile</h1>
+        <h1 className='text-3xl font-bold text-white drop-shadow-lg'>Profile</h1>
       </div>
       <div className='flex items-center justify-center w-full mt-5 '>
         <div className=' sm:w-[450px] h-[500px] rounded-xl bg-white/30 shadow-lg border-b border-r border-white/60 flex-col flex items-center px-6 w-full'>
