@@ -4,9 +4,6 @@ import { useEffect } from 'react';
 import LoginForm from './LoginForm/LoginForm';
 import RegisterForm from './RegisterForm/RegisterForm';
 
-// Import assets
-import background from '../../assets/pictures/mesh-gradient.jpg';
-
 // Import from RTK
 import { useAppSelector } from '../../hooks/rtkHook';
 

@@ -122,7 +122,7 @@ const Register = () => {
   return (
     <>
       <GlassWrapper>
-        <h1 className='relative text-4xl font-black text-sky-500 top-14'>SKIL</h1>
+        <h1 className='mt-8 text-4xl font-black text-sky-500'>SKIL</h1>
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Create New Account</h1>
           <GlassForm inputs={inputs} onChange={onChange} values={registerStates} />

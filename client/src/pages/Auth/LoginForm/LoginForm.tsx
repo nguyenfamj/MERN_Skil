@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // Import Login Interface
 import { inputMetas, onChangeType, loginAuth } from '../../../interfaces/formInputs';
-import { loginAuthResponse, errorAlert } from '../../../interfaces/authApiResponse';
+import { loginAuthResponse } from '../../../interfaces/authApiResponse';
 
 // Import Form Components
 import GlassForm from '../../../components/GlassForm/GlassForm';
@@ -92,7 +92,7 @@ const LoginForm = () => {
   return (
     <>
       <GlassWrapper>
-        <h1 className='relative text-4xl font-black top-14 text-sky-500'>SKIL</h1>
+        <h1 className='mt-8 text-4xl font-black text-sky-500'>SKIL</h1>
 
         <div>
           <h1 className='mb-4 text-2xl font-semibold text-indigo-900'>Login</h1>
