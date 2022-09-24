@@ -2,6 +2,14 @@
 
 Web application to keep track current learning status, with the form similar to a Kanban board and the user can create new card with responsive notification.
 
+You can take a look at the deployed project here: <https://skil.netlify.app/>
+
+## Preview:
+
+##### Preview video
+
+##### Login screen with validation
+
 ## Technologies used:
 
 **Front-end:**
@@ -65,3 +73,5 @@ cd client
 npm install
 npm run start
 ```
+
+Enjoy the application!
